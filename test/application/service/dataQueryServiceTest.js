@@ -9,10 +9,10 @@ describe('DataQueryService use case test', () => {
     before(() => {
         service = new DataQueryService();
     });
-    describe('#queryData(dataSourceID, startTimestamp, endTimestamp, traceContext, callback)', () => {
+    describe('#queryData(queryOpt, traceContext, callback)', () => {
         context('query data', () => {
             it('if no "dataSourceID startTimestamp endTimestamp",is fail', done => {
-                service.queryData(null, null, null, {}, (err, resultJSON) => {
+                service.queryData({}, {}, (err, resultJSON) => {
                     if (err) {
                         done(err);
                     }
@@ -22,12 +22,16 @@ describe('DataQueryService use case test', () => {
             });
             it('if no this data source,is return null', done => {
                 let mockDataDAO = {};
-                mockDataDAO.getDatasByDataSourceID = (dataSourceID, startTimestamp, endTimestamp, traceContext, callback) => {
+                mockDataDAO.getDatasByDataSourceID = (queryOpt, traceContext, callback) => {
                     callback(null, null);
                 };
                 muk(service, "_dataDAO", mockDataDAO);
-                let dataSourceID = "no-data-source";
-                service.queryData(dataSourceID, 0, 1, {}, (err, resultJSON) => {
+                let queryOpt = {
+                    dataSourceID: "no-data-source",
+                    startTimestamp: 0,
+                    endTimestamp: 1
+                };
+                service.queryData(queryOpt, {}, (err, resultJSON) => {
                     if (err) {
                         done(err);
                     }
@@ -47,8 +51,12 @@ describe('DataQueryService use case test', () => {
                     });
                 };
                 muk(service, "_dataDAO", mockDataDAO);
-                let dataSourceID = "station-datatype-other";
-                service.queryData(dataSourceID, 1, 2, {}, (err, resultJSON) => {
+                let queryOpt = {
+                    dataSourceID: "station-datatype-other",
+                    startTimestamp: 1,
+                    endTimestamp: 2
+                };
+                service.queryData(queryOpt, {}, (err, resultJSON) => {
                     if (err) {
                         done(err);
                     }

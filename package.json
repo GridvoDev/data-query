@@ -11,14 +11,14 @@
   "devDependencies": {
     "mocha": "^3.2.0",
     "muk": "^0.5.3",
-    "should": "^11.1.2",
+    "should": "^11.2.0",
     "supertest": "^2.0.1"
   },
   "dependencies": {
     "co": "^4.6.0",
-    "express": "^4.14.0",
-    "gridvo-common-js": "0.0.17",
-    "mongodb": "^2.2.21",
+    "express": "^4.14.1",
+    "gridvo-common-js": "0.0.19",
+    "mongodb": "^2.2.24",
     "underscore": "^1.8.3"
   }
 }

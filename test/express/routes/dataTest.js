@@ -19,12 +19,12 @@ describe('dataRouter use case test', () => {
                 }));
                 app.use('/datas', dataRouter);
                 let mockDataQueryService = {};
-                mockDataQueryService.queryData = function (dataSourceID, startTimestamp, endTimestamp, traceContext, callback) {
-                    if (!dataSourceID || !startTimestamp || !endTimestamp) {
+                mockDataQueryService.queryData = function (queryOpt, traceContext, callback) {
+                    if (!queryOpt || !queryOpt.dataSourceID || !queryOpt.startTimestamp || !queryOpt.endTimestamp) {
                         callback(null, null);
                         return;
                     }
-                    if (dataSourceID == "station-datatype-other") {
+                    if (queryOpt.dataSourceID == "station-datatype-other") {
                         callback(null, {
                             dataSource: "station-datatype-other",
                             startTimestamp: 1,
@@ -55,11 +55,11 @@ describe('dataRouter use case test', () => {
             done(err);
         });
     });
-    describe('#get:/datas/:dataSourcrID?startTimestamp=&endTimestamp=', () => {
+    describe('#get:/datas/:dataSourcrID?startTimestamp=&endTimestamp=&timespan=', () => {
         context('get data source datas', () => {
             it('should response fail if no this data source', done => {
                 request(server)
-                    .get(`/datas/no-station-datatype-other?startTimestamp=1&endTimestamp=2`)
+                    .get(`/datas/no-station-datatype-other?startTimestamp=1&endTimestamp=2&timespan=60000`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res) => {
@@ -89,7 +89,7 @@ describe('dataRouter use case test', () => {
             });
             it('should response ok', done => {
                 request(server)
-                    .get(`/datas/station-datatype-other?startTimestamp=1&endTimestamp=2`)
+                    .get(`/datas/station-datatype-other?startTimestamp=1&endTimestamp=2&timespan=60000`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res) => {
